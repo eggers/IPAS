@@ -1,10 +1,10 @@
 // ==UserScript==
 // @id             iitc-plugin-ipas-link@eggershead
 // @name           IITC Plugin: simulate an attack on portal
-// @version        0.1.0.20130403.170000
-// @namespace      https://github.com/xosofox/IPAS
+// @version        0.1.0.20130407.170000
+// @namespace      https://github.com/eggers/IPAS
 // @updateURL      http://eggershead.com/IPAS/js/iitc-ipas-link.meta.js
-// @downloadURL    http://eggershead.com/js/iitc-ipas-link.user.js
+// @downloadURL    http://eggershead.com/IPAS/js/iitc-ipas-link.user.js
 // @include        https://www.ingress.com/intel*
 // @include        http://www.ingress.com/intel*
 // @match          https://www.ingress.com/intel*
@@ -26,14 +26,22 @@ window.plugin.ipasLink.setupCallback = function() {
 }
 
 window.plugin.ipasLink.addLink = function(d) {
-    $('.linkdetails').append('<aside><a href="http://eggershead.com/index.html#' + window.plugin.ipasLink.getHash(d.portalDetails) + '" target="ipaswindow">attack!</a></aside>');
+    $('.linkdetails').append('<aside><a href="http://eggershead.com/IPAS/index.html#' + window.plugin.ipasLink.getHash(d.portalDetails) + '" target="ipaswindow">Simulate an attack with IPAS!</a></aside>');
 }
 
 window.plugin.ipasLink.getHash = function(d) {
     console.log(d);
     var hashParts=[];
     $.each(d.resonatorArray.resonators, function(ind, reso) {
-        hashParts.push(reso.level + "," + reso.distanceToPortal + "," + reso.energyTotal);
+        var level = 1;
+        var distanceToPortal = 35;
+        var energyTotal = 0;
+        if (reso) {
+            var level = reso.level;
+            var distanceToPortal = reso.distanceToPortal;
+            var energyTotal = reso.energyTotal;
+        }
+        hashParts.push(level + "," + distanceToPortal + "," + energyTotal);
     });
     console.log(d);
     return hashParts.join(";")+"|" + "r,c,0,v";
